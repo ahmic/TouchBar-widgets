@@ -1,0 +1,23 @@
+set userName to "ahmic.jpg"
+set mJson to do shell script "curl -s 'https://www.instagram.com/" & userName & "/?__a=1'"
+set AppleScript's text item delimiters to {","}
+set keyValueList to (every text item in mJson) as list
+set AppleScript's text item delimiters to ""
+
+set followersItem to item 7 of keyValueList
+set followersObject to RemoveFromString("\"", followersItem)
+set followersObject to RemoveFromString("{", followersObject)
+set followersObject to RemoveFromString("}", followersObject)
+set AppleScript's text item delimiters to {":"}
+set theKeyValueFollowers to (every text item in followersObject) as list
+set num to item 3 of theKeyValueFollowers
+
+return "🕵️ " & num
+
+-- remove character or string from given string
+on RemoveFromString(CharOrString, txt)
+	set AppleScript's text item delimiters to CharOrString
+	set temp to txt's text items
+	set AppleScript's text item delimiters to ""
+	return temp as text
+end RemoveFromString
